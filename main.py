@@ -1,21 +1,8 @@
-from discord import Client, Message, Intents
-import dotenv
-import os
+from bots.bot import Bot
+from data.env import Env
 
 
-class MyClient(Client):
-    async def on_ready(self):
-        print("Logged on as", self.user)
-    
-    async def on_message(self, message: Message):
-        print(f"Message from {message.author}: {message.content}")
-
-
-intents = Intents.default()
-intents.message_content = True
-
-client = MyClient(intents=intents)
-
-dotenv.load_dotenv()
-
-client.run(os.getenv("TOKEN"))
+if __name__ == "__main__":
+    env = Env()
+    bot = Bot(env)
+    bot.run()
