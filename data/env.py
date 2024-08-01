@@ -9,3 +9,7 @@ class Env:
 
     def get_token(self) -> str:
         return os.getenv("TOKEN")
+
+
+    def get_prefix(self) -> str:
+        return os.getenv("PREFIX")

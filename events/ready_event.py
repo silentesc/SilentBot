@@ -1,5 +1,5 @@
-from discord import Client
+from discord.ext import commands
 
 
-async def on_ready(client: Client) -> None:
-    print("Logged on as", client.user)
+async def on_ready(bot: commands.Bot) -> None:
+    print("Logged on as", bot.user)
