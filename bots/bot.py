@@ -2,8 +2,8 @@ from discord import Intents
 from discord.ext import commands
 
 from data.env import Env
-from events import ready
-from commands import help
+from events import ready_event
+from commands import help_command, ping_command
 
 
 class Bot:
@@ -20,7 +20,7 @@ class Bot:
 
         @self.bot.event
         async def on_ready() -> None:
-            await ready.on_ready(self.bot)
+            await ready_event.on_ready(self.bot)
         
         """
         Commands
@@ -28,7 +28,11 @@ class Bot:
 
         @self.bot.command(name="help")
         async def help(ctx: commands.Context, *args) -> None:
-            await help.help(ctx, *args)
+            await help_command.on_help(self.bot, ctx, *args)
+        
+        @self.bot.command(name="ping")
+        async def ping(ctx: commands.Context, *args) -> None:
+            await ping_command.on_ping(self.bot, ctx, *args)
 
 
     def run(self):

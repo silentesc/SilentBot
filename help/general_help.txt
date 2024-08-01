@@ -1,0 +1,2 @@
+**Commands**
+help - Shows this page
