@@ -1,0 +1,11 @@
+**Explanation:**
+Displays the bots reponse time und latency
+
+**Usage example:**
+`?ping`
+
+**Options:**
+/
+
+`[]` - required
+`()` - optional

@@ -1,0 +1,11 @@
+**Explanation:**
+Displays help about commands
+
+**Usage example:**
+`?help (command_name)`
+
+**Options:**
+`command_name` - The specific command to view.
+
+`[]` - required
+`()` - optional
