@@ -1,9 +1,9 @@
-from discord import Client, Message, Intents
+from discord import Intents
+from discord.ext import commands
 
 from data.env import Env
-import events
-import events.message
-import events.ready
+from events import ready
+from commands import help
 
 
 class Bot:
@@ -11,20 +11,25 @@ class Bot:
         self.env = env
         self.intents = Intents.default()
         self.intents.message_content = True
-        self.client = Client(intents=self.intents)
+        self.bot = commands.Bot(command_prefix="?", intents=self.intents)
+        self.bot.help_command = None
 
         """
-        Register event handlers
+        Events
         """
 
-        @self.client.event
+        @self.bot.event
         async def on_ready() -> None:
-            await events.ready.on_ready(self.client)
+            await ready.on_ready(self.bot)
+        
+        """
+        Commands
+        """
 
-        @self.client.event
-        async def on_message(message: Message) -> None:
-            await events.message.on_message(message)
+        @self.bot.command(name="help")
+        async def help(ctx: commands.Context, *args) -> None:
+            await help.help(ctx, *args)
 
 
     def run(self):
-        self.client.run(self.env.get_token())
+        self.bot.run(self.env.get_token())
