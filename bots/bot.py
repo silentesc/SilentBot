@@ -4,6 +4,7 @@ from discord.ext import commands
 from data.env import Env
 from events import ready_event, message_event, member_join_event
 from commands import help_command, ping_command
+from utils import logger
 
 
 class Bot:
@@ -44,8 +45,12 @@ class Bot:
         
         @self.bot.event
         async def on_command_error(ctx: commands.Context, error: commands.CommandError) -> None:
-            print("An error occurred:")
-            print(error)
+            command_name = ctx.command.name
+            command_author = ctx.author
+            command_message_content = ctx.message.content
+
+            error_message = f"{error}\nCommand Name: {command_name}\nAuthor: {command_author}\nMessage: {command_message_content}"
+            logger.log_error(error_message)
         
         """
         Commands
