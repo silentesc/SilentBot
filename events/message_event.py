@@ -1,10 +1,9 @@
-from discord import Message
-from discord.ext import commands
+import discord
 
 
-async def on_message(bot: commands.Bot, message: Message) -> None:
+async def on_message(client: discord.Client, message: discord.Message) -> None:
     # Return if the message is from the bot itself
-    if message.author == bot.user:
+    if message.author == client.user:
         return
     
     print(f"Message from {message.author}: {message.content}")
