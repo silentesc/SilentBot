@@ -1,21 +1,20 @@
 import discord
-from discord.ext import commands
 import os
 
 
-async def on_help(bot: commands.Bot, ctx: commands.Context, *args) -> None:
+async def on_help(client: discord.Client, interaction: discord.Interaction, command: str) -> None:
     title = "Help"
     help_page = None
 
-    if len(args) == 0:
+    if not command:
         with open("help/general_help.txt", "r") as file:
             help_page = file.read()
     else:
-        title = f"Help for `{args[0]}`"
-        path = f"help/specific_help/{args[0]}.txt"
+        title = f"Help for `{command}`"
+        path = f"help/specific_help/{command}.txt"
 
         if not os.path.exists(path):
-            await ctx.send(f"Help for command `{args[0]}` not found.")
+            await interaction.response.send_message(f"Help for command `{command}` not found.")
             return
 
         with open(path, "r") as file:
@@ -27,4 +26,4 @@ async def on_help(bot: commands.Bot, ctx: commands.Context, *args) -> None:
         color=0x98aaff
     )
 
-    await ctx.send(embed=response_embed)
+    await interaction.response.send_message(embed=response_embed)

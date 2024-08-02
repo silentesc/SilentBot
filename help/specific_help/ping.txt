@@ -1,8 +1,8 @@
 **Explanation:**
-Displays the bots reponse time und latency
+Displays the bots reponse time und latency.
 
 **Usage example:**
-`?ping`
+`/ping`
 
 **Options:**
 /

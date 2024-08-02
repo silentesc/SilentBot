@@ -1,8 +1,8 @@
 **Explanation:**
-Displays help about commands
+Displays help about commands.
 
 **Usage example:**
-`?help (command_name)`
+`/help (command_name)`
 
 **Options:**
 `command_name` - The specific command to view.

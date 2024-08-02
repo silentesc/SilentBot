@@ -1,61 +1,58 @@
-from discord import Intents, Message
-from discord.ext import commands
+import discord
 
 from data.env import Env
 from events import ready_event, message_event
 from commands import help_command, ping_command
-from utils import logger
 
 
 class Bot:
     def __init__(self, env: Env) -> None:
         self.env = env
-        self.intents = Intents.default()
+        self.intents = discord.Intents.default()
         self.intents.message_content = True
-        self.bot = commands.Bot(command_prefix=env.get_prefix(), intents=self.intents)
-        self.bot.help_command = None
+        self.client = discord.Client(intents=self.intents)
+        self.tree = discord.app_commands.CommandTree(self.client)
 
         """
         Events
         """
 
-        @self.bot.event
+        @self.client.event
         async def on_ready() -> None:
-            await ready_event.on_ready(self.bot)
+            # await self.tree.sync(guild=discord.Object(id=self.env.get_test_guild_id()))
+            # await self.tree.sync()
+            await ready_event.on_ready(self.client)
         
-        @self.bot.event
-        async def on_message(message: Message) -> None:
-            # Check if the message is a command and process it, then return
-            if message.content.startswith(self.env.get_prefix()):
-                command_name = message.content.split(" ")[0].lower().replace(self.env.get_prefix(), "")
-                if self.bot.get_command(command_name) is not None:
-                    await self.bot.process_commands(message)
-                    return
-            
-            # Call event
-            await message_event.on_message(self.bot, message)
-        
-        @self.bot.event
-        async def on_command_error(ctx: commands.Context, error: commands.CommandError) -> None:
-            command_name = ctx.command.name
-            command_author = ctx.author
-            command_message_content = ctx.message.content
-
-            error_message = f"{error}\nCommand Name: {command_name}\nAuthor: {command_author}\nMessage: {command_message_content}"
-            logger.log_error(error_message)
+        @self.client.event
+        async def on_message(message: discord.Message) -> None:
+            await message_event.on_message(self.client, message)
         
         """
         Commands
         """
 
-        @self.bot.command(name="help")
-        async def help(ctx: commands.Context, *args) -> None:
-            await help_command.on_help(self.bot, ctx, *args)
+        @self.tree.command(
+            name="help",
+            description="Displays help about commands.",
+            guild=discord.Object(id=self.env.get_test_guild_id())
+        )
+        @discord.app_commands.choices(command=[
+            discord.app_commands.Choice(name="ping", value="ping"),
+            discord.app_commands.Choice(name="help", value="help")
+        ])
+        async def help(interaction: discord.Interaction, command: discord.app_commands.Choice[str] = None) -> None:
+            command_value = command.value if command else None
+            await help_command.on_help(self.client, interaction, command_value)
         
-        @self.bot.command(name="ping")
-        async def ping(ctx: commands.Context, *args) -> None:
-            await ping_command.on_ping(self.bot, ctx, *args)
+
+        @self.tree.command(
+            name="ping",
+            description="Displays the bots reponse time und latency.",
+            guild=discord.Object(id=self.env.get_test_guild_id())
+        )
+        async def ping(interaction: discord.Interaction) -> None:
+            await ping_command.on_ping(self.client, interaction)
 
 
     def run(self):
-        self.bot.run(self.env.get_token())
+        self.client.run(self.env.get_token())

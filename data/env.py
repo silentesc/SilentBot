@@ -11,5 +11,5 @@ class Env:
         return os.getenv("TOKEN")
 
 
-    def get_prefix(self) -> str:
-        return os.getenv("PREFIX")
+    def get_test_guild_id(self) -> str:
+        return os.getenv("TEST_GUILD_ID")
