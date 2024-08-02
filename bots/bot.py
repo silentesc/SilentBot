@@ -1,8 +1,8 @@
-from discord import Intents, Message, Member
+from discord import Intents, Message
 from discord.ext import commands
 
 from data.env import Env
-from events import ready_event, message_event, member_join_event
+from events import ready_event, message_event
 from commands import help_command, ping_command
 from utils import logger
 
@@ -38,10 +38,6 @@ class Bot:
             
             # Call event
             await message_event.on_message(self.bot, message)
-        
-        @self.bot.event
-        async def on_member_join(member: Member) -> None:
-            await member_join_event.on_member_join(self.bot, member)
         
         @self.bot.event
         async def on_command_error(ctx: commands.Context, error: commands.CommandError) -> None:
