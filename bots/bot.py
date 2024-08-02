@@ -3,6 +3,7 @@ import discord
 from data.env import Env
 from events import ready_event, message_event
 from commands import help_command, ping_command
+from utils import logger
 
 
 class Bot:
@@ -22,13 +23,14 @@ class Bot:
             # await self.tree.sync(guild=discord.Object(id=self.env.get_test_guild_id()))
             # await self.tree.sync()
             await ready_event.on_ready(self.client)
+
         
         @self.client.event
         async def on_message(message: discord.Message) -> None:
             await message_event.on_message(self.client, message)
         
         """
-        Commands
+        Slash Commands
         """
 
         @self.tree.command(
@@ -52,6 +54,16 @@ class Bot:
         )
         async def ping(interaction: discord.Interaction) -> None:
             await ping_command.on_ping(self.client, interaction)
+        
+
+        """
+        Slash Command Error Handling
+        """
+
+        @self.tree.error
+        async def on_command_error(interaction: discord.Interaction, error: discord.app_commands.AppCommandError) -> None:
+            logger.log_error(error)
+            await interaction.response.send_message(f"{error}", ephemeral=True)
 
 
     def run(self):
