@@ -32,10 +32,6 @@ class Bot:
                     await self.bot.process_commands(message)
                     return
             
-            # Return if the message is from the bot itself
-            if message.author == self.bot.user:
-                return
-            
             # Call event
             await message_event.on_message(self.bot, message)
         
