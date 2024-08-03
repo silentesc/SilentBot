@@ -2,8 +2,9 @@ import discord
 
 from data.env import Env
 from events import ready_event, message_event
-from commands import help_command, ping_command
+from commands import help_command, ping_command, reaction_role_command
 from utils import logger
+from views import reaction_roles
 
 
 class Bot:
@@ -23,6 +24,8 @@ class Bot:
             # await self.tree.sync(guild=discord.Object(id=self.env.get_test_guild_id()))
             # await self.tree.sync()
             await ready_event.on_ready(self.client)
+
+            # self.client.add_view(reaction_roles.ReactionRoles(label="sdf", style=discord.ButtonStyle.primary))
 
         
         @self.client.event
@@ -54,6 +57,17 @@ class Bot:
         )
         async def ping(interaction: discord.Interaction) -> None:
             await ping_command.on_ping(self.client, interaction)
+        
+
+        @self.tree.command(
+            name="reaction_role",
+            description="Creates a button that assigns a role to the user.",
+            guild=discord.Object(id=self.env.get_test_guild_id())
+        )
+        @discord.app_commands.checks.bot_has_permissions(manage_messages=True)
+        @discord.app_commands.checks.has_permissions(administrator=True)
+        async def reaction_role(interaction: discord.Interaction, message_text: str, label: str, role: discord.Role) -> None:
+            await reaction_role_command.on_reaction_role(self.client, interaction, message_text, label, role)
         
 
         """
