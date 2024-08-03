@@ -34,6 +34,7 @@ class Bot:
         Slash Commands
         """
 
+        # Help Command
         @self.tree.command(
             name="help",
             description="Displays help about commands.",
@@ -49,6 +50,7 @@ class Bot:
             await help_command.on_help(self.client, interaction, command_value)
         
 
+        # Ping Command
         @self.tree.command(
             name="ping",
             description="Displays the bots reponse time und latency.",
@@ -58,6 +60,7 @@ class Bot:
             await ping_command.on_ping(self.client, interaction)
         
 
+        # Button Role Command
         @self.tree.command(
             name="button_role",
             description="Creates a button that assigns a role to the user.",

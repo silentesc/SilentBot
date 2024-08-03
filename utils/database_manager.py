@@ -50,5 +50,17 @@ async def check_create_tables():
         """
     )
 
+    await db.execute(
+        """
+        CREATE TABLE IF NOT EXISTS leveling (
+            id INTEGER PRIMARY KEY NOT NULL,
+            guild_id INTEGER NOT NULL,
+            member_id INTEGER NOT NULL,
+            xp INTEGER NOT NULL,
+            level INTEGER NOT NULL
+        )
+        """
+    )
+
     await db.commit()
     await db.disconnect()
