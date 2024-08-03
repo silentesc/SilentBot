@@ -1,9 +1,20 @@
 **Explanation:**
 Displays the server's settings.
+Settings can be changed using `/[setting_name]` and changing the value.
+
+The following placeholders are possible for `level_up_message`:
+_-_ `{member_mention}`
+_-_ `{member_name}`
+_-_ `{member_id}`
+_-_ `{level}`
+_-_ `{xp}`
+_-_ `{xp_needed_to_level_up}`
+_-_ `{guild_name}`
+_-_ `{guild_id}`
 
 **Permissions needed:**
 Bot: /
-User: /
+User: `administrator` (only for changing settings)
 
 **Usage example:**
 `/settings`

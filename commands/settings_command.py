@@ -1,10 +1,15 @@
 import discord
 
-from utils import database_scripts
+from utils import database_manager, database_scripts
 
 
 async def on_settings(client: discord.Client, interaction: discord.Interaction) -> None:
-    rows = database_scripts.get_settings(interaction.guild.id)
+    await database_scripts.check_create_settings(interaction.guild.id)
+
+    db = database_manager.SQLiteManager()
+    await db.connect()
+    rows = await db.execute_one("SELECT * FROM settings WHERE guild_id = ?", interaction.guild.id)
+    await db.disconnect()
     
     msg = ""
     msg += f"leveling_enabled: `{bool(rows[2])}`\n"
