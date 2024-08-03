@@ -86,10 +86,10 @@ class Bot:
         Slash Command Error Handling
         """
 
-        @self.tree.error
-        async def on_command_error(interaction: discord.Interaction, error: discord.app_commands.AppCommandError) -> None:
-            logger.log_error(error)
-            await interaction.response.send_message(f"{error}", ephemeral=True)
+        # @self.tree.error
+        # async def on_command_error(interaction: discord.Interaction, error: discord.app_commands.AppCommandError) -> None:
+        #     logger.log_error(error)
+        #     await interaction.response.send_message(f"{error}", ephemeral=True)
 
 
     def run(self):

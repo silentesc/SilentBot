@@ -47,17 +47,24 @@ async def check_create_tables():
     await db.disconnect()
 
 
-async def insert_default_guild_settings(guild_id: int):
+async def get_settings(guild_id: int):
     db = database_manager.SQLiteManager()
     await db.connect()
 
-    await db.execute(
-        """
-        INSERT INTO settings (guild_id, leveling_enabled, xp_per_message, level_up_message_enabled, level_up_message, level_up_message_channel_id)
-        VALUES (?, 1, 3, 1, "Congratulations {member.mention}! You have leveled up to level {level}!", -1)
-        """,
-        guild_id
-    )
+    rows = await db.execute_one("SELECT * FROM settings WHERE guild_id = ?", guild_id.id)
+
+    if not rows:
+        await db.execute(
+            """
+            INSERT INTO settings (guild_id, leveling_enabled, xp_per_message, level_up_message_enabled, level_up_message, level_up_message_channel_id)
+            VALUES (?, 1, 3, 1, "Congratulations {member.mention}! You have leveled up to level {level}!", -1)
+            """,
+            guild_id
+        )
+        await db.commit()
+        await db.disconnect()
+        return await get_settings(guild_id)
 
     await db.commit()
     await db.disconnect()
+    return rows
