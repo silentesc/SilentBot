@@ -18,13 +18,16 @@ async def on_level(client: discord.Client, interaction: discord.Interaction, mem
     
     xp = row[0]
     level = row[1]
+    xp_needed_to_level_up = 100 * (level + 1)
+    progress_percent = round((xp / xp_needed_to_level_up) * 100, 2)
+    progress_bar = "█" * int(progress_percent / 5) + "░" * int(20 - progress_percent / 5)
 
     response_embed = discord.Embed(
         title=f"{member.name}'s Level",
+        description=f"**Level:** {level}\n**XP**: {xp}",
         color=0x98aaff,
     )
     response_embed.set_author(name=member.name, icon_url=member.avatar)
-    response_embed.add_field(name="Level", value=level, inline=False)
-    response_embed.add_field(name="XP", value=xp, inline=False)
+    response_embed.add_field(name="Progress", value=f"{progress_bar} {progress_percent}%", inline=False)
 
     await interaction.response.send_message(embed=response_embed)

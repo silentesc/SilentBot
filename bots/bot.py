@@ -3,7 +3,7 @@ import discord
 from data.env import Env
 from events import ready_event, message_event
 from commands import help_command, level_command, ping_command, button_role_command, settings_command
-from utils import database_manager, database_scripts, logger
+from utils import logger
 
 
 class Bot:
@@ -13,6 +13,8 @@ class Bot:
         self.intents.message_content = True
         self.client = discord.Client(intents=self.intents)
         self.tree = discord.app_commands.CommandTree(self.client)
+
+        self.ready = False
 
         """
         Events
@@ -24,10 +26,13 @@ class Bot:
             # await self.tree.sync()
 
             await ready_event.on_ready(self.client)
+            self.ready = True
 
         
         @self.client.event
         async def on_message(message: discord.Message) -> None:
+            if not self.ready:
+                return
             await message_event.on_message(self.client, message)
         
         """
@@ -47,6 +52,9 @@ class Bot:
             discord.app_commands.Choice(name="settings", value="settings"),
         ])
         async def help(interaction: discord.Interaction, command: discord.app_commands.Choice[str] = None) -> None:
+            if not self.ready:
+                return
+            
             command_value = command.value if command else None
             await help_command.on_help(self.client, interaction, command_value)
         
@@ -58,6 +66,9 @@ class Bot:
             guild=discord.Object(id=self.env.get_test_guild_id())
         )
         async def ping(interaction: discord.Interaction) -> None:
+            if not self.ready:
+                return
+            
             await ping_command.on_ping(self.client, interaction)
         
 
@@ -70,16 +81,22 @@ class Bot:
         @discord.app_commands.checks.bot_has_permissions(manage_roles=True)
         @discord.app_commands.checks.has_permissions(administrator=True)
         async def button_role(interaction: discord.Interaction, message_text: str, label: str, role: discord.Role) -> None:
+            if not self.ready:
+                return
+            
             await button_role_command.on_button_role(self.client, interaction, message_text, label, role)
         
 
         # Settings Command
         @self.tree.command(
             name="settings",
-            description="Displays the server's settings.",
+            description="Display and manage the server's settings.",
             guild=discord.Object(id=self.env.get_test_guild_id())
         )
         async def settings(interaction: discord.Interaction, setting: str = None, new_value: str = None) -> None:
+            if not self.ready:
+                return
+            
             await settings_command.on_settings(self.client, interaction, setting, new_value)
         
 
@@ -90,6 +107,9 @@ class Bot:
             guild=discord.Object(id=self.env.get_test_guild_id())
         )
         async def level(interaction: discord.Interaction, member: discord.Member = None) -> None:
+            if not self.ready:
+                return
+            
             await level_command.on_level(self.client, interaction, member)
 
 

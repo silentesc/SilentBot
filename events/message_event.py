@@ -30,7 +30,7 @@ async def on_message(client: discord.Client, message: discord.Message) -> None:
 
     # If the user is not in the database, add them
     if not row:
-        await db.execute("INSERT INTO leveling (guild_id, member_id, xp, level) VALUES (?, ?, 0, 0)", guild.id, author.id)
+        await db.execute("INSERT INTO leveling (guild_id, member_id, xp, level) VALUES (?, ?, ?, 0)", guild.id, author.id, xp_per_message)
         await db.commit()
         await db.disconnect()
         return
