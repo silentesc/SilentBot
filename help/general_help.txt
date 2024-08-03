@@ -3,3 +3,4 @@ Use `?help (command_name)` for detailed explanation.
 **Commands:**
   `/help` -> Displays help about commands.
   `/ping` -> Displays the bots reponse time und latency.
+  `/button_role` -> Creates a button that assigns a role to the user.

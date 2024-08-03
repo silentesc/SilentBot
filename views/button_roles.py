@@ -1,7 +1,7 @@
 import discord
 
 
-class ReactionRoles(discord.ui.View):
+class ButtonRoles(discord.ui.View):
     def __init__(self, label: str, custom_id: str, style: discord.ButtonStyle, role: discord.Role) -> None:
         super().__init__(timeout=None)
         self.label = label

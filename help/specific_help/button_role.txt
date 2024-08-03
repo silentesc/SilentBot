@@ -1,0 +1,14 @@
+**Explanation:**
+Creates a button that assigns a role to the user.
+It will create a new message from the bot that has the button.
+
+**Usage example:**
+`/button_role [message_text] [label] [role]`
+
+**Options:**
+`message_text` - The text the message should have.
+`label` - The text the button should have.
+`role` - The role to give when the button is clicked.
+
+`[]` - required
+`()` - optional
