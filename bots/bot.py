@@ -2,7 +2,7 @@ import discord
 
 from data.env import Env
 from events import ready_event, message_event
-from commands import help_command, leaderboard_command, level_command, ping_command, button_role_command, settings_command
+from commands import delete_command, help_command, leaderboard_command, level_command, ping_command, button_role_command, settings_command
 from utils import logger
 
 
@@ -51,6 +51,8 @@ class Bot:
             discord.app_commands.Choice(name="ping", value="ping"),
             discord.app_commands.Choice(name="button_role", value="button_role"),
             discord.app_commands.Choice(name="settings", value="settings"),
+            discord.app_commands.Choice(name="level", value="level"),
+            discord.app_commands.Choice(name="leaderboard", value="leaderboard"),
         ])
         async def help(interaction: discord.Interaction, command: discord.app_commands.Choice[str] = None) -> None:
             if not self.ready:
@@ -125,7 +127,6 @@ class Bot:
                 return
             
             await leaderboard_command.on_leaderboard(self.client, interaction)
-
 
         """
         Slash Command Error Handling
