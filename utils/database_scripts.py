@@ -51,7 +51,7 @@ async def get_settings(guild_id: int):
     db = database_manager.SQLiteManager()
     await db.connect()
 
-    rows = await db.execute_one("SELECT * FROM settings WHERE guild_id = ?", guild_id.id)
+    rows = await db.execute_one("SELECT * FROM settings WHERE guild_id = ?", guild_id)
 
     if not rows:
         await db.execute(

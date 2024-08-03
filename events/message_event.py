@@ -1,6 +1,6 @@
 import discord
 
-from utils import database_manager
+from utils import database_manager, database_scripts
 
 
 async def on_message(client: discord.Client, message: discord.Message) -> None:
@@ -27,7 +27,8 @@ async def on_message(client: discord.Client, message: discord.Message) -> None:
     xp_needed_to_level_up = 100 * (level + 1)
 
     # Add xp and check if the user has leveled up
-    xp += 10 # TODO change this to a factor
+    settings_rows = await database_scripts.get_settings(guild.id)
+    xp += settings_rows[3]
 
     if xp >= xp_needed_to_level_up:
         level += 1
