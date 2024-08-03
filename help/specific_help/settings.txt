@@ -1,0 +1,15 @@
+**Explanation:**
+Displays the server's settings.
+
+**Permissions needed:**
+Bot: /
+User: /
+
+**Usage example:**
+`/settings`
+
+**Options:**
+/
+
+`[]` - required
+`()` - optional

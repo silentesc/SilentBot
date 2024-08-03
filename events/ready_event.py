@@ -1,12 +1,12 @@
 import discord
 
-from utils import database_manager
+from utils import database_manager, database_scripts
 from views import button_roles
 
 
 async def on_ready(client: discord.Client) -> None:
     # Create tables if they do not exist
-    await database_manager.check_create_tables()
+    await database_scripts.check_create_tables()
 
     # Load buttons from the database
     db = database_manager.SQLiteManager()

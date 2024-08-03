@@ -2,7 +2,7 @@ import discord
 
 from data.env import Env
 from events import ready_event, message_event
-from commands import help_command, ping_command, button_role_command
+from commands import help_command, ping_command, button_role_command, settings_command
 from utils import logger
 
 
@@ -44,6 +44,7 @@ class Bot:
             discord.app_commands.Choice(name="help", value="help"),
             discord.app_commands.Choice(name="ping", value="ping"),
             discord.app_commands.Choice(name="button_role", value="button_role"),
+            discord.app_commands.Choice(name="settings", value="settings"),
         ])
         async def help(interaction: discord.Interaction, command: discord.app_commands.Choice[str] = None) -> None:
             command_value = command.value if command else None
@@ -66,11 +67,20 @@ class Bot:
             description="Creates a button that assigns a role to the user.",
             guild=discord.Object(id=self.env.get_test_guild_id())
         )
-        @discord.app_commands.checks.bot_has_permissions(manage_messages=True)
+        @discord.app_commands.checks.bot_has_permissions(manage_roles=True)
         @discord.app_commands.checks.has_permissions(administrator=True)
         async def button_role(interaction: discord.Interaction, message_text: str, label: str, role: discord.Role) -> None:
             await button_role_command.on_button_role(self.client, interaction, message_text, label, role)
         
+
+        # Settings Command
+        @self.tree.command(
+            name="settings",
+            description="Displays the server's settings.",
+            guild=discord.Object(id=self.env.get_test_guild_id())
+        )
+        async def settings(interaction: discord.Interaction) -> None:
+            await settings_command.on_settings(self.client, interaction)
 
         """
         Slash Command Error Handling

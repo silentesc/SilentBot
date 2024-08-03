@@ -8,7 +8,7 @@ async def on_ping(client: discord.Client, interaction: discord.Interaction) -> N
     # Build response embed
     response_embed = discord.Embed(
         title="🏓 Ping",
-        color=0x99c2ff
+        color=0x98aaff
     )
     response_embed.add_field(
         name="Response Time",

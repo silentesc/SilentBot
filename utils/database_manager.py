@@ -33,34 +33,3 @@ class SQLiteManager:
     async def rollback(self):
         await self.connection.rollback()
 
-
-async def check_create_tables():
-    db = SQLiteManager()
-    await db.connect()
-
-    await db.execute(
-        """
-        CREATE TABLE IF NOT EXISTS button_roles (
-            id INTEGER PRIMARY KEY NOT NULL,
-            label TEXT NOT NULL,
-            style INTEGER NOT NULL,
-            role_id INTEGER NOT NULL,
-            guild_id INTEGER NOT NULL
-        )
-        """
-    )
-
-    await db.execute(
-        """
-        CREATE TABLE IF NOT EXISTS leveling (
-            id INTEGER PRIMARY KEY NOT NULL,
-            guild_id INTEGER NOT NULL,
-            member_id INTEGER NOT NULL,
-            xp INTEGER NOT NULL,
-            level INTEGER NOT NULL
-        )
-        """
-    )
-
-    await db.commit()
-    await db.disconnect()
