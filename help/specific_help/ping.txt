@@ -1,6 +1,10 @@
 **Explanation:**
 Displays the bots reponse time und latency.
 
+**Permissions needed:**
+Bot: /
+User: /
+
 **Usage example:**
 `/ping`
 

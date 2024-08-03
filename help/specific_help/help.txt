@@ -1,6 +1,10 @@
 **Explanation:**
 Displays help about commands.
 
+**Permissions needed:**
+Bot: /
+User: /
+
 **Usage example:**
 `/help (command_name)`
 

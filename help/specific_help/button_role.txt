@@ -2,6 +2,10 @@
 Creates a button that assigns a role to the user.
 It will create a new message from the bot that has the button.
 
+**Permissions needed:**
+Bot: `manage_roles`
+User: `administrator`
+
 **Usage example:**
 `/button_role [message_text] [label] [role]`
 
