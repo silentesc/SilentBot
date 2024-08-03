@@ -21,11 +21,7 @@ class Bot:
 
         @self.client.event
         async def on_ready() -> None:
-            # await self.tree.sync(guild=discord.Object(id=self.env.get_test_guild_id()))
-            # await self.tree.sync()
             await ready_event.on_ready(self.client)
-
-            # self.client.add_view(reaction_roles.ReactionRoles(label="sdf", style=discord.ButtonStyle.primary))
 
         
         @self.client.event
@@ -74,10 +70,11 @@ class Bot:
         Slash Command Error Handling
         """
 
-        @self.tree.error
-        async def on_command_error(interaction: discord.Interaction, error: discord.app_commands.AppCommandError) -> None:
-            logger.log_error(error)
-            await interaction.response.send_message(f"{error}", ephemeral=True)
+        # TODO
+        # @self.tree.error
+        # async def on_command_error(interaction: discord.Interaction, error: discord.app_commands.AppCommandError) -> None:
+        #     logger.log_error(error)
+        #     await interaction.response.send_message(f"{error}", ephemeral=True)
 
 
     def run(self):

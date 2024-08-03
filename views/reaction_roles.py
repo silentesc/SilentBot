@@ -2,13 +2,14 @@ import discord
 
 
 class ReactionRoles(discord.ui.View):
-    def __init__(self, label: str, style: discord.ButtonStyle, role: discord.Role) -> None:
+    def __init__(self, label: str, custom_id: str, style: discord.ButtonStyle, role: discord.Role) -> None:
         super().__init__(timeout=None)
         self.label = label
+        self.custom_id = custom_id
         self.style = style
         self.role = role
 
-        button = discord.ui.Button(label=self.label, custom_id=self.label, style=self.style) # TODO custom_id should be unique
+        button = discord.ui.Button(label=self.label, custom_id=self.custom_id, style=self.style)
         button.callback = self.button_callback
         self.add_item(button)
 
