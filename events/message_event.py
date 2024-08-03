@@ -6,4 +6,7 @@ async def on_message(client: discord.Client, message: discord.Message) -> None:
     if message.author == client.user:
         return
     
-    print(f"Message from {message.author}: {message.content}")
+    guild = message.guild
+    author = message.author
+
+    
