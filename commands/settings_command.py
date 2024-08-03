@@ -65,9 +65,8 @@ async def on_settings(client: discord.Client, interaction: discord.Interaction, 
                 await interaction.response.send_message("Invalid value. Please provide a number.", ephemeral=True)
                 return
             channel_id = int(new_value)
-            try:
-                await client.fetch_channel(channel_id)
-            except discord.errors.NotFound:
+            channel = client.get_channel(channel_id)
+            if not channel:
                 await interaction.response.send_message("Channel not found. Please provide a valid channel ID.", ephemeral=True)
                 return
             await db.execute("UPDATE settings SET level_up_message_channel_id = ? WHERE guild_id = ?", new_value, interaction.guild.id)

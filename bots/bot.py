@@ -2,7 +2,7 @@ import discord
 
 from data.env import Env
 from events import ready_event, message_event
-from commands import help_command, level_command, ping_command, button_role_command, settings_command
+from commands import help_command, leaderboard_command, level_command, ping_command, button_role_command, settings_command
 from utils import logger
 
 
@@ -11,6 +11,7 @@ class Bot:
         self.env = env
         self.intents = discord.Intents.default()
         self.intents.message_content = True
+        self.intents.members = True
         self.client = discord.Client(intents=self.intents)
         self.tree = discord.app_commands.CommandTree(self.client)
 
@@ -111,6 +112,19 @@ class Bot:
                 return
             
             await level_command.on_level(self.client, interaction, member)
+        
+
+        # Leaderboard Command
+        @self.tree.command(
+            name="leaderboard",
+            description="Displays the leaderboard of the users with the most levels.",
+            guild=discord.Object(id=self.env.get_test_guild_id())
+        )
+        async def leaderboard(interaction: discord.Interaction) -> None:
+            if not self.ready:
+                return
+            
+            await leaderboard_command.on_leaderboard(self.client, interaction)
 
 
         """

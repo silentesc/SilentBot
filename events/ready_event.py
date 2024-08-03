@@ -14,9 +14,8 @@ async def on_ready(client: discord.Client) -> None:
     rows = await db.execute("SELECT * FROM button_roles")
     await db.disconnect()
     for row in rows:
-        guild = await client.fetch_guild(row[4])
+        guild = client.get_guild(row[4])
         role = discord.utils.get(guild.roles, id=row[3])
-
         view = button_roles.ButtonRoles(label=row[1], custom_id=str(row[0]), style=row[2], role=role)
         client.add_view(view)
 

@@ -45,7 +45,10 @@ async def on_message(client: discord.Client, message: discord.Message) -> None:
         level += 1
         xp = 0
         if level_up_message_enabled:
-            channel = await guild.fetch_channel(level_up_message_channel_id)
+            channel = guild.get_channel(level_up_message_channel_id)
+            if not channel:
+                channel = message.channel
+            
             await channel.send(
                 level_up_message
                 .replace("{member_mention}", author.mention)
