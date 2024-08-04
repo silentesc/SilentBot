@@ -12,10 +12,11 @@ async def on_reaction_role(client: discord.Client, interaction: discord.Interact
     # Insert the reaction roles into the database
     try:
         id = await db.execute_one(
-            "INSERT INTO reaction_roles (message_id, channel_id, role_id, guild_id) VALUES (0, ?, ?, ?) RETURNING id",
+            "INSERT INTO reaction_roles (message_id, channel_id, role_id, guild_id, emoji) VALUES (0, ?, ?, ?, ?) RETURNING id",
             interaction.channel_id,
             role.id,
-            interaction.guild_id
+            interaction.guild_id,
+            emoji
         )
         id = id[0]
 

@@ -180,50 +180,50 @@ class Bot:
         Slash Command Error Handling
         """
 
-        # @self.tree.error
-        # async def on_command_error(interaction: discord.Interaction, error: discord.app_commands.AppCommandError) -> None:
-        #     # Common Errors like missing permissions etc. that are allowed to happen and are handled here
-        #     if isinstance(error, discord.app_commands.CommandOnCooldown):
-        #         await interaction.response.send_message(f"Command is on cooldown. Please try again in {error.retry_after:.2f} seconds.", ephemeral=True)
-        #         return
-        #     if isinstance(error, discord.app_commands.BotMissingPermissions):
-        #         missing_perms_str = ", ".join(error.missing_permissions)
-        #         await interaction.response.send_message(f"Bot is missing the following permissions:\n{missing_perms_str}", ephemeral=True)
-        #         return
-        #     if isinstance(error, discord.app_commands.MissingPermissions):
-        #         missing_perms_str = ", ".join(error.missing_permissions)
-        #         await interaction.response.send_message(f"You are missing the following permissions:\n{missing_perms_str}", ephemeral=True)
-        #         return
+        @self.tree.error
+        async def on_command_error(interaction: discord.Interaction, error: discord.app_commands.AppCommandError) -> None:
+            # Common Errors like missing permissions etc. that are allowed to happen and are handled here
+            if isinstance(error, discord.app_commands.CommandOnCooldown):
+                await interaction.response.send_message(f"Command is on cooldown. Please try again in {error.retry_after:.2f} seconds.", ephemeral=True)
+                return
+            if isinstance(error, discord.app_commands.BotMissingPermissions):
+                missing_perms_str = ", ".join(error.missing_permissions)
+                await interaction.response.send_message(f"Bot is missing the following permissions:\n{missing_perms_str}", ephemeral=True)
+                return
+            if isinstance(error, discord.app_commands.MissingPermissions):
+                missing_perms_str = ", ".join(error.missing_permissions)
+                await interaction.response.send_message(f"You are missing the following permissions:\n{missing_perms_str}", ephemeral=True)
+                return
             
-        #     # CommandInvokeError (Should not happen)
-        #     if isinstance(error, discord.app_commands.CommandInvokeError):
-        #         error_msg = f"Catched CommandInvokeError\n"
-        #         error_msg += f"Command: {interaction.data.get("name")}\n"
-        #         error_msg += f"Args: {interaction.data.get("options")}\n"
-        #         error_msg += f"User: {interaction.user}\n"
-        #         error_msg += f"Error: {error}"
+            # CommandInvokeError (Should not happen)
+            if isinstance(error, discord.app_commands.CommandInvokeError):
+                error_msg = f"Catched CommandInvokeError\n"
+                error_msg += f"Command: {interaction.data.get("name")}\n"
+                error_msg += f"Args: {interaction.data.get("options")}\n"
+                error_msg += f"User: {interaction.user}\n"
+                error_msg += f"Error: {error}"
 
-        #         print(error_msg)
-        #         l = logger.Logger()
-        #         l.log_error(error_msg)
-        #         print("Error has been logged to file.")
+                print(error_msg)
+                l = logger.Logger()
+                l.log_error(error_msg)
+                print("Error has been logged to file.")
 
-        #         await interaction.response.send_message(f"An internal error occured.", ephemeral=True)
-        #         return
+                await interaction.response.send_message(f"An internal error occured.", ephemeral=True)
+                return
             
-        #     # Unknown Error
-        #     error_msg = f"An unknown error ({error.__class__}) has been catched while executing a command.\n"
-        #     error_msg += f"Command: {interaction.data.get("name")}\n"
-        #     error_msg += f"Args: {interaction.data.get("options")}\n"
-        #     error_msg += f"User: {interaction.user}\n"
-        #     error_msg += f"Error: {error}"
+            # Unknown Error
+            error_msg = f"An unknown error ({error.__class__}) has been catched while executing a command.\n"
+            error_msg += f"Command: {interaction.data.get("name")}\n"
+            error_msg += f"Args: {interaction.data.get("options")}\n"
+            error_msg += f"User: {interaction.user}\n"
+            error_msg += f"Error: {error}"
 
-        #     print(error_msg)
-        #     l = logger.Logger()
-        #     l.log_error(error_msg)
-        #     print("Error has been logged to file.")
+            print(error_msg)
+            l = logger.Logger()
+            l.log_error(error_msg)
+            print("Error has been logged to file.")
 
-        #     await interaction.response.send_message(f"An internal error occured.", ephemeral=True)
+            await interaction.response.send_message(f"An internal error occured.", ephemeral=True)
 
 
     def run(self):

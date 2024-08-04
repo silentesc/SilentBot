@@ -27,7 +27,8 @@ async def check_create_tables():
                 message_id INTEGER NOT NULL,
                 channel_id INTEGER NOT NULL,
                 role_id INTEGER NOT NULL,
-                guild_id INTEGER NOT NULL
+                guild_id INTEGER NOT NULL,
+                emoji TEXT NOT NULL
             )
             """
         )
