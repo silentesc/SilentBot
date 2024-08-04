@@ -13,7 +13,6 @@ async def on_leaderboard(client: discord.Client, interaction: discord.Interactio
     leaderboard_msg = ""
 
     count = 0
-    print(datetime.datetime.now())
     for row in rows:
         member = client.get_user(row[0])
         if not member:
@@ -21,7 +20,6 @@ async def on_leaderboard(client: discord.Client, interaction: discord.Interactio
         xp = row[1]
         level = row[2]
         leaderboard_msg += f"#{count + 1} - {member.mention} - Level {level} - {xp} XP\n"
-    print(datetime.datetime.now())
     
     if not rows or not leaderboard_msg:
         await interaction.response.send_message("No one is on the leaderboard yet.")
