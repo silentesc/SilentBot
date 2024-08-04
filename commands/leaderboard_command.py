@@ -1,4 +1,3 @@
-import datetime
 import discord
 
 from utils import database_manager
@@ -20,6 +19,7 @@ async def on_leaderboard(client: discord.Client, interaction: discord.Interactio
         xp = row[1]
         level = row[2]
         leaderboard_msg += f"#{count + 1} - {member.mention} - Level {level} - {xp} XP\n"
+        count += 1
     
     if not rows or not leaderboard_msg:
         await interaction.response.send_message("No one is on the leaderboard yet.")

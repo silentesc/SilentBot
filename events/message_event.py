@@ -1,6 +1,13 @@
 import discord
 
-from utils import database_manager, database_scripts
+from utils import database_manager, database_scripts, level_system
+
+
+# TODO: Add a cooldown for xp gain
+# TODO: Help for every level up replacement like {member_mention} etc.
+# TODO: Add a way to disable xp gain for certain channels
+# TODO: Add a way to disable xp gain for certain roles
+# TODO: Add a way to disable xp gain for certain users
 
 
 async def on_message(client: discord.Client, message: discord.Message) -> None:
@@ -30,20 +37,24 @@ async def on_message(client: discord.Client, message: discord.Message) -> None:
 
     # If the user is not in the database, add them
     if not row:
-        await db.execute("INSERT INTO leveling (guild_id, member_id, xp, level) VALUES (?, ?, ?, 0)", guild.id, author.id, xp_per_message)
-        await db.commit()
-        await db.disconnect()
-        return
+        await db.execute("INSERT INTO leveling (guild_id, member_id, xp, level) VALUES (?, ?, 0, 0)", guild.id, author.id)
+        xp = 0
+        level = 0
+    # If the user is in the database, get their xp and level
+    else:
+        xp = row[3]
+        level = row[4]
     
-    xp = row[3]
-    level = row[4]
-    xp_needed_to_level_up = 100 * (level + 1)
+    xp_needed_to_level_up = level_system.get_xp_needed_to_level_up(level)
 
     # Add xp and check if the user has leveled up
     xp += xp_per_message
     if xp >= xp_needed_to_level_up:
-        level += 1
-        xp = 0
+        while xp >= xp_needed_to_level_up:
+            level += 1
+            xp = xp - xp_needed_to_level_up
+            xp_needed_to_level_up = level_system.get_xp_needed_to_level_up(level)
+        
         if level_up_message_enabled:
             channel = guild.get_channel(level_up_message_channel_id)
             if not channel:
