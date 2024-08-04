@@ -12,6 +12,20 @@ async def check_create_tables():
                 id INTEGER PRIMARY KEY NOT NULL,
                 label TEXT NOT NULL,
                 style INTEGER NOT NULL,
+                message_id INTEGER NOT NULL,
+                channel_id INTEGER NOT NULL,
+                role_id INTEGER NOT NULL,
+                guild_id INTEGER NOT NULL
+            )
+            """
+        )
+
+        await db.execute(
+            """
+            CREATE TABLE IF NOT EXISTS reaction_roles (
+                id INTEGER PRIMARY KEY NOT NULL,
+                message_id INTEGER NOT NULL,
+                channel_id INTEGER NOT NULL,
                 role_id INTEGER NOT NULL,
                 guild_id INTEGER NOT NULL
             )

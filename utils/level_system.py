@@ -40,12 +40,11 @@ class LevelSystem:
             # Check if the member is in cooldown
             cooldown = -(now - xp_gain_cooldown_secs - LevelSystem.cooldown_members[guild.id][member.id])
             if cooldown > 0:
-                print(f"Member {member.id} is in cooldown for {cooldown} seconds")
                 return
             LevelSystem.cooldown_members[guild.id][member.id] = now
 
             # Get the user's xp and level
-            row = await db.execute_one("SELECT * FROM leveling WHERE guild_id = ? AND member_id = ?", guild.id, member.id)
+            row = await db.execute_one("SELECT xp, level FROM leveling WHERE guild_id = ? AND member_id = ?", guild.id, member.id)
 
             # Create new row or get from existing row
             if not row:
@@ -53,8 +52,8 @@ class LevelSystem:
                 xp = 0
                 level = 0
             else:
-                xp = row[3]
-                level = row[4]
+                xp = row[0]
+                level = row[1]
             
             # Calculate the new xp and level
             leveled_up = False
