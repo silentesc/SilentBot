@@ -97,11 +97,20 @@ class Bot:
             description="Display and manage the server's settings.",
             guild=discord.Object(id=self.env.get_test_guild_id())
         )
-        async def settings(interaction: discord.Interaction, setting: str = None, new_value: str = None) -> None:
+        @discord.app_commands.choices(setting=[
+            discord.app_commands.Choice(name="leveling_enabled", value="leveling_enabled"),
+            discord.app_commands.Choice(name="xp_gain_cooldown_secs", value="xp_gain_cooldown_secs"),
+            discord.app_commands.Choice(name="xp_per_message", value="xp_per_message"),
+            discord.app_commands.Choice(name="level_up_message_enabled", value="level_up_message_enabled"),
+            discord.app_commands.Choice(name="level_up_message", value="level_up_message"),
+            discord.app_commands.Choice(name="level_up_message_channel_id", value="level_up_message_channel_id"),
+        ])
+        async def settings(interaction: discord.Interaction, setting: discord.app_commands.Choice[str] = None, new_value: str = None) -> None:
             if not self.ready:
                 return
             
-            await settings_command.on_settings(self.client, interaction, setting, new_value)
+            setting_value = setting.value if setting else None
+            await settings_command.on_settings(self.client, interaction, setting_value, new_value)
         
 
         # Level Command

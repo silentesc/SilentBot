@@ -35,6 +35,7 @@ async def check_create_tables():
             id INTEGER PRIMARY KEY NOT NULL,
             guild_id INTEGER NOT NULL,
             leveling_enabled INTEGER NOT NULL,
+            xp_gain_cooldown_secs INTEGER NOT NULL,
             xp_per_message INTEGER NOT NULL,
             level_up_message_enabled INTEGER NOT NULL,
             level_up_message TEXT NOT NULL,
@@ -56,8 +57,8 @@ async def check_create_settings(guild_id: int):
     if not rows:
         await db.execute(
             """
-            INSERT INTO settings (guild_id, leveling_enabled, xp_per_message, level_up_message_enabled, level_up_message, level_up_message_channel_id)
-            VALUES (?, 1, 3, 1, "Congratulations {member_mention}! You have leveled up to level {level}!", -1)
+            INSERT INTO settings (guild_id, leveling_enabled, xp_gain_cooldown_secs, xp_per_message, level_up_message_enabled, level_up_message, level_up_message_channel_id)
+            VALUES (?, 1, 3, 3, 1, "Congratulations {member_mention}! You have leveled up to level {level}!", 0)
             """,
             guild_id
         )

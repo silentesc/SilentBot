@@ -12,4 +12,5 @@ async def on_message(client: discord.Client, message: discord.Message) -> None:
     channel = message.channel
     author = message.author
 
-    await level_system.trigger_xp_gain(guild, author, channel)
+    l = level_system.LevelSystem()
+    await l.trigger_xp_gain(guild, author, channel)

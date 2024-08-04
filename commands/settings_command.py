@@ -10,15 +10,16 @@ async def on_settings(client: discord.Client, interaction: discord.Interaction, 
     if not setting:
         db = database_manager.SQLiteManager()
         await db.connect()
-        rows = await db.execute_one("SELECT * FROM settings WHERE guild_id = ?", interaction.guild.id)
+        rows = await db.execute_one("SELECT leveling_enabled, xp_gain_cooldown_secs, xp_per_message, level_up_message_enabled, level_up_message, level_up_message_channel_id FROM settings WHERE guild_id = ?", interaction.guild.id)
         await db.disconnect()
         
         msg = ""
-        msg += f"leveling_enabled: `{bool(rows[2])}`\n"
-        msg += f"xp_per_message: `{rows[3]}`\n"
-        msg += f"level_up_message_enabled: `{bool(rows[4])}`\n"
-        msg += f"level_up_message: `{rows[5]}`\n"
-        msg += f"level_up_message_channel_id: `{rows[6]}`\n"
+        msg += f"leveling_enabled: `{bool(rows[0])}`\n"
+        msg += f"xp_gain_cooldown_secs: `{int(rows[1])}`\n"
+        msg += f"xp_per_message: `{rows[2]}`\n"
+        msg += f"level_up_message_enabled: `{bool(rows[3])}`\n"
+        msg += f"level_up_message: `{rows[4]}`\n"
+        msg += f"level_up_message_channel_id: `{rows[5]}`\n"
 
         response_embed = discord.Embed(
             title="Settings",
@@ -48,18 +49,28 @@ async def on_settings(client: discord.Client, interaction: discord.Interaction, 
                 await interaction.response.send_message("Invalid value. Please provide `true` or `false`.", ephemeral=True)
                 return
             await db.execute("UPDATE settings SET leveling_enabled = ? WHERE guild_id = ?", new_value.lower() == "true", interaction.guild.id)
+        
+        case "xp_gain_cooldown_secs":
+            if not new_value.isdigit():
+                await interaction.response.send_message("Invalid value. Please provide a number.", ephemeral=True)
+                return
+            await db.execute("UPDATE settings SET xp_gain_cooldown_secs = ? WHERE guild_id = ?", new_value, interaction.guild.id)
+        
         case "xp_per_message":
             if not new_value.isdigit():
                 await interaction.response.send_message("Invalid value. Please provide a number.", ephemeral=True)
                 return
             await db.execute("UPDATE settings SET xp_per_message = ? WHERE guild_id = ?", new_value, interaction.guild.id)
+        
         case "level_up_message_enabled":
             if new_value.lower() not in ["true", "false"]:
                 await interaction.response.send_message("Invalid value. Please provide `true` or `false`.", ephemeral=True)
                 return
             await db.execute("UPDATE settings SET level_up_message_enabled = ? WHERE guild_id = ?", new_value.lower() == "true", interaction.guild.id)
+        
         case "level_up_message":
             await db.execute("UPDATE settings SET level_up_message = ? WHERE guild_id = ?", new_value, interaction.guild.id)
+        
         case "level_up_message_channel_id":
             if not new_value.isdigit():
                 await interaction.response.send_message("Invalid value. Please provide a number.", ephemeral=True)
@@ -70,6 +81,7 @@ async def on_settings(client: discord.Client, interaction: discord.Interaction, 
                 await interaction.response.send_message("Channel not found. Please provide a valid channel ID.", ephemeral=True)
                 return
             await db.execute("UPDATE settings SET level_up_message_channel_id = ? WHERE guild_id = ?", new_value, interaction.guild.id)
+        
         case _:
             await interaction.response.send_message("Invalid setting.", ephemeral=True)
             return
