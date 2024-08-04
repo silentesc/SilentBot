@@ -166,7 +166,8 @@ class Bot:
                 error_msg += f"Error: {error}"
 
                 print(error_msg)
-                logger.log_error(error_msg)
+                l = logger.Logger()
+                l.log_error(error_msg)
                 print("Error has been logged to file.")
 
                 await interaction.response.send_message(f"An internal error occured.", ephemeral=True)
@@ -180,7 +181,8 @@ class Bot:
             error_msg += f"Error: {error}"
 
             print(error_msg)
-            logger.log_error(error_msg)
+            l = logger.Logger()
+            l.log_error(error_msg)
             print("Error has been logged to file.")
 
             await interaction.response.send_message(f"An internal error occured.", ephemeral=True)
