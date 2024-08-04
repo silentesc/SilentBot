@@ -20,7 +20,7 @@ async def on_level(client: discord.Client, interaction: discord.Interaction, mem
     level = row[1]
     xp_needed_to_level_up = 100 * (level + 1)
     progress_percent = round((xp / xp_needed_to_level_up) * 100, 2)
-    progress_bar = "█" * int(progress_percent / 5) + "░" * int(20 - progress_percent / 5)
+    progress_bar = "█" * int(progress_percent / 5) + "░" * int(20 - progress_percent / 5) # TODO better progress bar
 
     response_embed = discord.Embed(
         title=f"{member.name}'s Level",

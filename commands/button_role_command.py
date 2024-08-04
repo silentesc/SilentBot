@@ -16,4 +16,7 @@ async def on_button_role(client: discord.Client, interaction: discord.Interactio
     view = button_roles.ButtonRoles(label=label, custom_id=str(custom_id[0]), style=discord.ButtonStyle.primary, role=role)
 
     await interaction.channel.send(message_text, view=view)
-    await interaction.delete_original_response()
+    try:
+        await interaction.delete_original_response()
+    except discord.NotFound:
+        pass

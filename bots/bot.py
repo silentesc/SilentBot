@@ -82,7 +82,7 @@ class Bot:
             description="Creates a button that assigns a role to the user.",
             guild=discord.Object(id=self.env.get_test_guild_id())
         )
-        @discord.app_commands.checks.bot_has_permissions(manage_roles=True)
+        @discord.app_commands.checks.bot_has_permissions(send_messages=True, manage_roles=True)
         @discord.app_commands.checks.has_permissions(administrator=True)
         async def button_role(interaction: discord.Interaction, message_text: str, label: str, role: discord.Role) -> None:
             if not self.ready:
