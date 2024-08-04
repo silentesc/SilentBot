@@ -28,7 +28,7 @@ async def on_settings(client: discord.Client, interaction: discord.Interaction, 
                 description=msg
             )
 
-            await interaction.response.send_message(embed=response_embed)
+            await interaction.response.send_message(embed=response_embed, ephemeral=True)
             return
         
         # Check user permissions

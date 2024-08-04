@@ -14,7 +14,7 @@ async def on_help(client: discord.Client, interaction: discord.Interaction, comm
         path = f"help/specific_help/{command}.txt"
 
         if not os.path.exists(path):
-            await interaction.response.send_message(f"Help for command `{command}` not found.")
+            await interaction.response.send_message(f"Help for command `{command}` not found.", ephemeral=True)
             return
 
         with open(path, "r") as file:
@@ -26,4 +26,4 @@ async def on_help(client: discord.Client, interaction: discord.Interaction, comm
         color=0x98aaff
     )
 
-    await interaction.response.send_message(embed=response_embed)
+    await interaction.response.send_message(embed=response_embed, ephemeral=True)
