@@ -2,23 +2,25 @@
 Display and manage the server's settings.
 
 **Settings:**
-```
-- leveling_enabled              -> Whether or not the leveling sytem is enabled
-- xp_gain_cooldown_secs         -> Only 1 message in the given time increases xp
-- xp_per_message                -> The amount of xp to increase every message
-- level_up_message_enabled      -> Whether or or not a message should be sent on level up
-- level_up_message              -> The message to send when leveled up
-- level_up_message_channel_id   -> The channel to send the level up message to (If not specified it will be the channel the message has been sent to)
-```
+- leveling_enabled
+`-> Whether or not the leveling sytem is enabled`
+- xp_gain_cooldown_secs
+`-> Only 1 message in the given time increases xp`
+- xp_per_message
+`-> The amount of xp to increase every message`
+- level_up_message_enabled
+`-> Whether or or not a message should be sent on level up`
+- level_up_message
+`-> The message to send when leveled up`
+- level_up_message_channel_id
+`-> The channel to send the level up message to (If not specified it will be the channel the message has been sent to)`
 
 **level_up_message placeholders:**
-```
-- {member_mention}
-- {member_name}
-- {member_id}
-- {level}
-- {xp}
-```
+- `{member_mention}`
+- `{member_name}`
+- `{member_id}`
+- `{level}`
+- `{xp}`
 
 **Permissions needed:**
 Bot: /
