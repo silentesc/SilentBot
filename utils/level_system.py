@@ -4,12 +4,6 @@ from datetime import datetime
 from utils import database_manager, database_scripts
 
 
-# TODO: Help for every level up replacement like {member_mention} etc.
-# TODO: Add a way to disable xp gain for certain channels
-# TODO: Add a way to disable xp gain for certain roles
-# TODO: Add a way to disable xp gain for certain users
-
-
 class LevelSystem:
     cooldown_members = {}
 
