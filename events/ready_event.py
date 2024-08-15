@@ -13,6 +13,17 @@ async def on_ready(client: discord.Client) -> None:
     await db.connect()
 
     try:
+        guild_ids = tuple([guild.id for guild in client.guilds])
+        if guild_ids:
+            await db.execute("DELETE FROM guilds WHERE guild_id NOT IN ({})".format(','.join('?' * len(guild_ids))), *guild_ids)
+            await db.execute("INSERT OR IGNORE INTO guilds (guild_id) VALUES " + ",".join(["(?)"] * len(guild_ids)), *guild_ids)
+        else:
+            await db.execute("DELETE FROM guilds")
+            await db.commit()
+            return
+        
+        # TODO When removed from a server this crashes
+
         button_roles_rows = await db.execute("SELECT id, label, style, message_id, channel_id, role_id, guild_id FROM button_roles")
         for row in button_roles_rows:
             id = row[0]
@@ -32,8 +43,6 @@ async def on_ready(client: discord.Client) -> None:
                 await guild.get_channel(channel_id).fetch_message(message_id)
             except discord.NotFound:
                 await db.execute("DELETE FROM button_roles WHERE id = ?", id)
-        await db.commit()
-            
         
         reaction_roles_rows = await db.execute("SELECT id, message_id, channel_id, role_id, guild_id FROM reaction_roles")
         for row in reaction_roles_rows:
@@ -48,9 +57,7 @@ async def on_ready(client: discord.Client) -> None:
                 await guild.get_channel(channel_id).fetch_message(message_id)
             except discord.NotFound:
                 await db.execute("DELETE FROM reaction_roles WHERE id = ?", id)
-        await db.commit()
 
-        # Bot is ready
-        print("Logged on as", client.user)
+        await db.commit()
     finally:
         await db.disconnect()

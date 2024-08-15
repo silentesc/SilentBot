@@ -1,7 +1,7 @@
 import discord
 
 from data.env import Env
-from events import message_delete_event, raw_reaction_add_event, ready_event, message_event
+from events import guild_remove_event, message_delete_event, raw_reaction_add_event, ready_event, message_event, guild_join_event
 from commands import help_command, leaderboard_command, level_command, ping_command, button_role_command, reaction_role_command, settings_command
 from utils import logger
 
@@ -27,6 +27,7 @@ class Bot:
             # await self.tree.sync()
 
             await ready_event.on_ready(self.client)
+            print("Logged on as", self.client.user)
             self.ready = True
 
         
@@ -44,6 +45,22 @@ class Bot:
                 return
             
             await message_delete_event.on_message_delete(self.client, message)
+        
+
+        @self.client.event
+        async def on_guild_join(guild: discord.Guild) -> None:
+            if not self.ready:
+                return
+            
+            await guild_join_event.on_guild_join(self.client, guild)
+        
+
+        @self.client.event
+        async def on_guild_remove(guild: discord.Guild) -> None:
+            if not self.ready:
+                return
+            
+            await guild_remove_event.on_guild_remove(self.client, guild)
         
 
         @self.client.event
