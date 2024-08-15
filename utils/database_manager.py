@@ -1,7 +1,7 @@
 import aiosqlite
 
 
-db_path = "data/database.db"
+db_path = "../database/database.db"
 
 
 class SQLiteManager:
@@ -32,4 +32,3 @@ class SQLiteManager:
 
     async def rollback(self):
         await self.connection.rollback()
-
